@@ -6,7 +6,7 @@
 
 **Ссылка на проект в GitHub**
 
-* [Ссылка](https://www.figma.com/file/StZjf8HnoeLdiXS7dYrLAh/JavaScript.-Sprint-4)
+* [Ссылка](https://yuliya-web.github.io/mesto/index.html)
 
 **Использованные технологии**
 
