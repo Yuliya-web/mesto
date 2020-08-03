@@ -9,8 +9,9 @@
 }
 
 .logo:hover {
-  background-image:url(../../images/logo-hover.svg);
   cursor: pointer;
+  transition: opacity .8s;
+  opacity: 0;
 }
 
 @media (max-width: 650px) {

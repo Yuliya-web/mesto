@@ -1,5 +1,5 @@
 .profile__add-button {
-  background-image: url(../../../images/Add\ Button.svg);
+  background-image: url(../../../images/add-button.svg);
   background-color: #000000;
   background-repeat: no-repeat;
   background-position: center;
@@ -15,8 +15,8 @@
 }
 
 .profile__add-button:hover {
-  background-image: url(../../../images/Add-hover.svg);
-  border-color: rgba(255, 255, 255, 0.6);  
+  transition: opacity .4s;
+  opacity: 0.6; 
   cursor: pointer;
 }
 
@@ -26,11 +26,5 @@
     width: 282px;
     height: 50px;
     margin-top: 36px;
-  }
-}
-@media (max-width: 910px) {
-  .profile__add-button:hover {
-    background-image: url(../../../images/add-hover-mobile.svg);
-    opacity: 0.6;
   }
 }

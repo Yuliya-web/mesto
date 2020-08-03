@@ -1,5 +1,5 @@
 .profile__edit-button {
-  background-image: url(../../../images/Edit\ Button.svg);
+  background-image: url(../../../images/edit-button.svg);
   background-position: center;
   background-color: #000000;
   box-sizing: border-box;
@@ -15,9 +15,9 @@
 }
 
 .profile__edit-button:hover {
-  background-image: url(../../../images/Edit\ Button\ Hover.svg);
-  border-color: rgba(255, 255, 255, 0.6);  
   cursor: pointer;
+  transition: opacity .5s;
+  opacity: 0.6;
 }
 
 @media (max-width: 560px) {

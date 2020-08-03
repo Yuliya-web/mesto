@@ -9,82 +9,93 @@
   <title>Mesto</title>
 </head>
 <body>
-  <div class="background">
-    <div class="page">
-      <header class="header">
-        <div class="logo"></div>
-      </header>
+  <div class="page">
+    <header class="header">
+      <div class="logo"></div>
+    </header>
 
-      <main class="content">
+    <main class="content">
 
-        <section class="profile">
-          <div class="profile__info">
-            <img class="profile__avatar" src="./images/avatar.jpg">
-            <div>
-              <div class="profile__title-and-edit">
-                <h1 class="profile__title">Жак-Ив Кусто</h1>
-                <button class="profile__edit-button"></button>
-              </div>
-              <p class="profile__subtitle">Исследователь океана</p>              
+      <section class="profile">
+        <div class="profile__info">
+          <img class="profile__avatar" src="./images/avatar.jpg" alt="Аватар">
+          <div class="profile__person">
+            <div class="profile__title-and-edit">
+              <h1 class="profile__title">Жак-Ив Кусто</h1>
+              <button class="profile__edit-button" type="button"></button>
             </div>
-                        
+            <p class="profile__subtitle">Исследователь океана</p>              
           </div>
-          <button class="profile__add-button"></button>         
-        </section>      
-      
-        <section class="popup">
-          <form class="popup__container">
-            <span class="popup__close-button"></span> 
-            <legend class="popup__title" >Редактировать профиль</legend>
-            <fieldset class="popup__fieldset">
-              <input type="text" class="popup__name-field" id="Name" name="nameInput">
-              <input type="text" class="popup__name-field" id="About" name="jobInput">
-            </fieldset>
-            <button class="popup__save-button" type="submit" >Сохранить</button> 
-          </form>
-        </section>
+                      
+        </div>
+        <button class="profile__add-button" type="button"></button>         
+      </section>      
+    
+      <section class="popup">
+        <form class="popup__container" name="name-and-job">
+          <button class="popup__close-button" type="button"></button> 
+          <h3 class="popup__title" >Редактировать профиль</h3>
+          <fieldset class="popup__fieldset">
+            <input type="text" class="popup__name-field" id="Name" name="nameInput">
+            <input type="text" class="popup__name-field" id="About" name="jobInput">
+          </fieldset>
+          <button class="popup__save-button" type="submit">Сохранить</button> 
+        </form>
+      </section>
 
-        <section class="elements">
-          <div class="element">
-            <img src="./images/karachaevsk.png" alt="Карачаевск">
+      <section class="elements">
+        <article class="element">
+          <img src="./images/karachaevsk.png" alt="Карачаевск">
+          <div class="element__text-and-button">
             <h2 class="element__title">Карачаевск</h2>
-            <button class="element__like"></button>
+            <button class="element__like" type="button"></button>
           </div>
-          <div class="element">
-            <img src="./images/elbrus.png" alt="Эльбрус">
+        </article>
+        <article class="element">
+          <img src="./images/elbrus.png" alt="Эльбрус">
+          <div class="element__text-and-button">
             <h2 class="element__title">Гора Эльбрус</h2>
-            <button class="element__like"></button>
-          </div>
-          <div class="element">
-            <img src="./images/dombaj.png" alt="Домбай">
+            <button class="element__like" type="button"></button>
+          </div>            
+        </article>
+        <article class="element">
+          <img src="./images/dombaj.png" alt="Домбай">
+          <div class="element__text-and-button">
             <h2 class="element__title">Домбай</h2>
-            <button class="element__like"></button>
-          </div>
-          <div class="element">
-            <img src="./images/elbrus.png" alt="Эльбрус">
+            <button class="element__like" type="button"></button>
+          </div>            
+        </article>
+        <article class="element">
+          <img src="./images/elbrus.png" alt="Эльбрус">
+          <div class="element__text-and-button">
             <h2 class="element__title">Гора Эльбрус</h2>
-            <button class="element__like"></button>
-          </div>
-          <div class="element">
-            <img src="./images/dombaj.png" alt="Домбай">
+            <button class="element__like" type="button"></button>
+          </div>            
+        </article>
+        <article class="element">
+          <img src="./images/dombaj.png" alt="Домбай">
+          <div class="element__text-and-button">
             <h2 class="element__title">Домбай</h2>
-            <button class="element__like"></button>
-          </div>
-          <div class="element">
-            <img src="./images/karachaevsk.png" alt="Карачаево-Черкессия">
+            <button class="element__like" type="button"></button>
+          </div>            
+        </article>
+        <article class="element">
+          <img src="./images/karachaevsk.png" alt="Карачаево-Черкессия">
+          <div class="element__text-and-button">
             <h2 class="element__title">Карачаево-Черкессия</h2>
-            <button class="element__like"></button>
-          </div>
-        </section>
-
-      </main>  
-
-      <footer class="footer">      
-        <p class="footer__copyright">© 2020 Mesto Russia</p>      
-      </footer>
+            <button class="element__like" type="button"></button>
+          </div>            
+        </article>
+      </section>
       
-    </div>
+    </main>  
+
+    <footer class="footer">      
+      <p class="footer__copyright">© 2020 Mesto Russia</p>      
+    </footer>
+    
   </div>
-  <script src="script.js"></script>
+  
+  <script src="./scripts/index.js"></script>
 </body>
 </html>
