@@ -1,5 +1,7 @@
 .element__text-and-button {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  background-color: #FFFFFF;
+  min-height: 79px;
+  border-radius: 0 0 10px 10px;
 }
