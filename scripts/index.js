@@ -131,7 +131,7 @@ function formSubmitPic(evt){
   function openPopupPic(){
     popupPic.classList.add('pic-popup_opened');
     popupPic.querySelector('.pic-popup__content').src = picture.src;
-    popupPic.querySelector('.pic-popup__name').textContent = element.name;
+    popupPic.querySelector('.pic-popup__name').textContent = namePic.value;
   }
   picture.addEventListener('click', openPopupPic);
 
