@@ -18,17 +18,14 @@ const elementContainer = document.querySelector('.elements'); //грид кар�
 
 function openPopup(pop){ //функция открытия попапов
   pop.classList.add('popup_opened');
-  name.value = nameProfile.textContent; //в форму переносится со странички
-  about.value = aboutProfile.textContent; //в форму переносится со странички
 }
 
-editButton.addEventListener('click', openPopup.bind(editButton, popup)); //обработчик кнопки редактирования
+editButton.addEventListener('click', openPopup.bind(editButton, popup, [name.value = nameProfile.textContent, about.value = aboutProfile.textContent])); //обработчик кнопки редактирования
+
 addButton.addEventListener('click', openPopup.bind(addButton, popupAdd)); //обработчик кнопки добавления +
 
 function closePopup(pop){ //функция закрытия попапов
   pop.classList.remove('popup_opened');
-  name.value = nameProfile.textContent;
-  about.value = aboutProfile.textContent; 
 }
 
 closeButton.addEventListener('click', closePopup.bind(closeButton, popup)); //обработчик кнопки закрытия редактирования
@@ -47,7 +44,7 @@ container.addEventListener('submit', formSubmitHandler); //перенос дан
 //создаем карточки из массива
 
 const addElement = document.querySelector('#element');//выбрали темплэйт
-
+//const cloneCard = addElement.content.cloneNode(true);
 function addElementContainer (element){ //делаем контейнер под карточку
   const cloneCard = addElement.content.cloneNode(true); //клонируем карточку из темплэйта
   const elImage = cloneCard.querySelector('.element__image');
@@ -82,12 +79,12 @@ function addElementContainer (element){ //делаем контейнер под
 
     const closePicBtn = popupPic.querySelector('.pic-popup__close-button'); //объявили кнопку закрытия картинки
     closePicBtn.addEventListener('click', closePopup.bind(closePicBtn, popupPic));//задействуем кнопку закрытия по клику 
-
-  elementContainer.prepend(cloneCard); //добавляем элемент в контейнер
+    return cloneCard;     
 }
+initialCards.forEach((element) => {
+  elementContainer.prepend(addElementContainer(element));
+});
 
-initialCards.forEach(addElementContainer); //по каждому элементу массива проходится функция (6 раз) 
-  
 //добавляем новые карточки
 
 const namePic = addContainer.querySelector('#namePic');//название картинки в форме
@@ -95,7 +92,7 @@ const linkPic = addContainer.querySelector('#link');//ссылка на карт
 function formSubmitPic(evt){ //функция добавления нового элемента
   const newCard = {name: namePic.value, link: linkPic.value};
   evt.preventDefault();
-  addElementContainer(newCard);
   closePopup(popupAdd); //закрываем Попап добавления картинок-элементов
+  elementContainer.prepend(addElementContainer(newCard));
 }
 addContainer.addEventListener('submit', formSubmitPic);// задействуем форму добавления элемента по клику
