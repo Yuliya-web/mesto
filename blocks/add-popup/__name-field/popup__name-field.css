@@ -1,8 +1,7 @@
-.add-popup__field {  
+.popup__name-field {  
   border: none;
   border-bottom: 1px solid;
   border-color: rgba(0, 0, 0, 0.2);
-  margin-bottom: 26px;
   margin-top: 51px;
   outline: none;
   width: 100%;
@@ -17,13 +16,13 @@
   color: #000000;
 }
 
-.add-popup__field:last-of-type {  
+.popup__name-field:last-of-type {  
   margin-bottom: 0;
-  margin-top: 0;
+  margin-top: 30px;
 }
 
 @media (max-width: 370px){
-  .add-popup__field  {  
+  .popup__name-field  {  
     margin-top: 31px;
   }
 }

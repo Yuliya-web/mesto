@@ -32,26 +32,30 @@
       </section>      
     
       <section class="popup">
-        <form class="popup__container" name="name-and-job">
+        <form class="popup__container" name="name-and-job" novalidate>
           <button class="popup__close-button" type="button"></button> 
           <h3 class="popup__title" >Редактировать профиль</h3>
           <fieldset class="popup__fieldset">
-            <input type="text" class="popup__name-field" id="Name" name="nameInput">
-            <input type="text" class="popup__name-field" id="About" name="jobInput">
+            <input type="text" class="popup__name-field" id="Name" name="nameInput" placeholder="Имя" minlength="2" maxlength="40" required>
+            <span id="Name-error" class="popup__name-field-error"></span>
+            <input type="text" class="popup__name-field" id="About" name="jobInput" placeholder="О себе" minlength="2" maxlength="200" required>
+            <span id="About-error" class="popup__name-field-error"></span>
           </fieldset>
           <button class="popup__save-button" type="submit">Сохранить</button> 
         </form>
       </section>
 
       <section class="add-popup">
-        <form class="add-popup__container" name="name-and-link">
+        <form class="popup__container" name="name-and-link" novalidate>
           <button class="add-popup__close-button" type="button"></button> 
-          <h3 class="add-popup__title">Новое место</h3>
-          <fieldset class="add-popup__fieldset">
-            <input type="text" class="add-popup__field" id="namePic" name="namePic" placeholder="Название">
-            <input type="url" class="add-popup__field" id="link" name="linkPic" placeholder="Ссылка на картинку">
+          <h3 class="popup__title">Новое место</h3>
+          <fieldset class="popup__fieldset">
+            <input type="text" class="popup__name-field" id="namePic" name="namePic" placeholder="Название" minlength="1" maxlength="30" required>
+            <span id="namePic-error" class="popup__name-field-error"></span>
+            <input type="url" class="popup__name-field" id="link" name="linkPic" placeholder="Ссылка на картинку" required>
+            <span id="link-error" class="popup__name-field-error"></span>
           </fieldset>
-          <button class="add-popup__add-button" type="submit">Создать</button> 
+          <button class="popup__save-button" type="submit">Создать</button> 
         </form>
       </section>
 
@@ -85,10 +89,11 @@
     </footer>
     
   </div>
+
   
   <script src="./scripts/initial-cards.js"></script>
   <script src="./scripts/index.js"></script>
-  
+  <script src="./scripts/validate.js"></script>
 
 </body>
 </html>
