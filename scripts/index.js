@@ -9,48 +9,47 @@ const nameProfile = profile.querySelector('.profile__title'); //имя на ст
 const aboutProfile = profile.querySelector('.profile__subtitle'); //работа на страничке
 
 const popupAdd = document.querySelector('.add-popup');//попап добавления элемента
-const popupAddHover = document.querySelector('.add-popup:hover');
 const addButton = profile.querySelector('.profile__add-button');//кнопка создать
 const addContainer = popupAdd.querySelector('.popup__container');//контейнер в попапе добавления
 const closeButtonPic = addContainer.querySelector('.add-popup__close-button'); //закрытие попапа формы добавления
 const elementContainer = document.querySelector('.elements'); //грид картинок
+const popupPic = document.querySelector('.pic-popup'); //попап увеличенной картинки
 
  //открытие-закрытие попапов
-
- function keyHandler(evt){ //закрытие на Esc
-  if (evt.keyCode === 27){
-    closePopup(popup);
-    closePopup(popupAdd);
-   }  
-} 
+ 
 function openPopup(pop){ //функция открытия попапов
   pop.classList.add('popup_opened');
   document.addEventListener('keydown', keyHandler);//обработчик кнопки закрытия нажатием на Esc
 }
 
-editButton.addEventListener('click', openPopup.bind(editButton, popup, [name.value = nameProfile.textContent, about.value = aboutProfile.textContent])); //обработчик кнопки редактирования
+editButton.addEventListener('click', () => { openPopup(popup); [name.value = nameProfile.textContent, about.value = aboutProfile.textContent] });//обработчик кнопки редактирования
 
-addButton.addEventListener('click', openPopup.bind(addButton, popupAdd)); //обработчик кнопки добавления +
+addButton.addEventListener('click', () => { openPopup(popupAdd); [namePic.value = '', linkPic.value = '']}); //обработчик кнопки добавления +
 
-function closeEscListener(){
-  if (!pop.classList.contains('popup_opened')){
+function keyHandler(evt){ //закрытие на Esc
+  if (evt.keyCode === 27){
+    const popupOpened = document.querySelector('.popup_opened')//открытый попап
+    closePopup(popupOpened);
     document.removeEventListener('keydown', keyHandler);//удалили обработчик кнопки закрытия нажатием на Esc
-  };
-};
+  }  
+} 
 
-function closePopup(pop){ //функция закрытия попапов
+function closePopup(pop){ //функция закрытия попапов; 
   pop.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closeEscListener);  
 }
 
-closeButton.addEventListener('click', closePopup.bind(closeButton, popup)); //обработчик кнопки закрытия редактирования
-closeButtonPic.addEventListener('click', closePopup.bind(closeButtonPic, popupAdd));//обработчик кнопки закрытия формы добавления
+closeButton.addEventListener('click', () => { closePopup(popup)}); //обработчик кнопки закрытия редактирования
+closeButtonPic.addEventListener('click', () => { closePopup(popupAdd)});//обработчик кнопки закрытия формы добавления
 
 function closeFormByOverlay(evt){  //функция закрытия по нажатию на оверлэй
- evt.target.classList.remove('popup_opened');
+  if (evt.target === document.querySelector('.popup_opened')) {
+    closePopup(document.querySelector('.popup_opened'));
+  }
 } 
+
 popup.addEventListener('click', closeFormByOverlay);//обработчик кнопки закрытия по нажатию на оверлэй 
 popupAdd.addEventListener('click', closeFormByOverlay);//обработчик кнопки закрытия по нажатию на оверлэй 
+
 
 //добавление данных и перенос их на страницу
 
@@ -65,7 +64,7 @@ container.addEventListener('submit', formSubmitHandler); //перенос дан
 //создаем карточки из массива
 
 const addElement = document.querySelector('#element');//выбрали темплэйт
-//const cloneCard = addElement.content.cloneNode(true);
+
 function addElementContainer (element){ //делаем контейнер под карточку
   const cloneCard = addElement.content.cloneNode(true); //клонируем карточку из темплэйта
   const elImage = cloneCard.querySelector('.element__image');
@@ -87,34 +86,30 @@ function addElementContainer (element){ //делаем контейнер под
       elementCard.classList.add('element_non-display'); //добавляет класс не показывать карточку (удалить)
     }
     delButton.addEventListener('click', deleteElement); //запускаем удаление по клику
+
+    //задействуем функцию увеличения картинки
+    function openPopupPic(){ //функция открытия увеличенной картинки 
+      openPopup(popupPic); //добавляет класс для открытия попапа картинки 
+      popupPic.querySelector('.pic-popup__content').src = elImage.src;  //подтягивает картинку из объявленной 
+      popupPic.querySelector('.pic-popup__name').textContent = element.name; //подтягивает имя элемента 
+    } 
+    elImage.addEventListener('click', openPopupPic);//открытие увеличенной картинки
+
     
-   //задействуем функцию увеличения картинки
-
-    const popupPic = document.querySelector('.pic-popup'); //попап увеличения картинки
-    function openPopupPic(){ //функция открытия увеличенной картинки
-      openPopup(popupPic); //добавляет класс для открытия попапа картинки
-      popupPic.querySelector('.pic-popup__content').src = elImage.src;  //подтягивает картинку из объявленной
-      popupPic.querySelector('.pic-popup__name').textContent = element.name; //подтягивает имя элемента
-    }
-    elImage.addEventListener('click', openPopupPic); //задействует картинку для клика-увеличения
-
-    const closePicBtn = popupPic.querySelector('.pic-popup__close-button'); //объявили кнопку закрытия картинки
-
-    closePicBtn.addEventListener('click', closePopup.bind(closePicBtn, popupPic));//задействуем кнопку закрытия по клику 
-
-    popupPic.addEventListener('click', closeFormByOverlay);//обработчик кнопки закрытия по нажатию на оверлэй 
-    
-    document.addEventListener('keydown', function keyHandler(evt){
-      if (evt.keyCode === 27){
-        closePopup(popupPic);
-       }
-    }); //обработчик кнопки закрытия нажатием на Esc
-
     return cloneCard;     
 }
+
 initialCards.forEach((element) => {
-  elementContainer.prepend(addElementContainer(element));
-});
+  elementContainer.prepend(addElementContainer(element));//проходим по массиву функцией создания карточек и добавляем их в контейнер
+});    
+
+
+const closePicBtn = popupPic.querySelector('.pic-popup__close-button'); //объявили кнопку закрытия картинки
+
+closePicBtn.addEventListener('click', () => { closePopup(popupPic)});//задействуем кнопку закрытия по клику на кнопку закрытия
+
+popupPic.addEventListener('click', closeFormByOverlay);//обработчик кнопки закрытия по нажатию на оверлэй 
+
 
 //добавляем новые карточки
 
