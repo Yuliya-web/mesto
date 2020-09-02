@@ -9,9 +9,10 @@ const nameProfile = profile.querySelector('.profile__title'); //имя на ст
 const aboutProfile = profile.querySelector('.profile__subtitle'); //работа на страничке
 
 const popupAdd = document.querySelector('.add-popup');//попап добавления элемента
-const addButton = profile.querySelector('.profile__add-button');//кнопка создать
+const addButton = profile.querySelector('.profile__add-button'); //кнопка +
 const addContainer = popupAdd.querySelector('.popup__container');//контейнер в попапе добавления
 const closeButtonPic = addContainer.querySelector('.add-popup__close-button'); //закрытие попапа формы добавления
+
 const elementContainer = document.querySelector('.elements'); //грид картинок
 const popupPic = document.querySelector('.pic-popup'); //попап увеличенной картинки
 
@@ -22,20 +23,36 @@ function openPopup(pop){ //функция открытия попапов
   document.addEventListener('keydown', keyHandler);//обработчик кнопки закрытия нажатием на Esc
 }
 
-editButton.addEventListener('click', () => { openPopup(popup); [name.value = nameProfile.textContent, about.value = aboutProfile.textContent] });//обработчик кнопки редактирования
+editButton.addEventListener('click', () => { //обработчик кнопки редактирования
+  openPopup(popup); 
+  name.value = nameProfile.textContent; 
+  about.value = aboutProfile.textContent;
+  //const inpError = addContainer.querySelector('popup__name-field-error_active'); 
+  //const fieldError = addContainer.querySelector('popup__name-field_error'); 
 
-addButton.addEventListener('click', () => { openPopup(popupAdd); [namePic.value = '', linkPic.value = '']}); //обработчик кнопки добавления +
+  //inpError.classList.remove('.popup__name-field-error_active');
+  //fieldError.classList.remove('.popup__name-field_error');
+}); 
+
+addButton.addEventListener('click', () => { //обработчик кнопки добавления +
+  openPopup(popupAdd); 
+  namePic.value = '';
+  linkPic.value = '';
+  const createButton = popupAdd.querySelector('.popup__save-button');
+  createButton.classList.add('popup__save-button_inactive');
+  createButton.disabled = true;
+}); 
 
 function keyHandler(evt){ //закрытие на Esc
   if (evt.keyCode === 27){
     const popupOpened = document.querySelector('.popup_opened')//открытый попап
     closePopup(popupOpened);
-    document.removeEventListener('keydown', keyHandler);//удалили обработчик кнопки закрытия нажатием на Esc
   }  
 } 
 
 function closePopup(pop){ //функция закрытия попапов; 
   pop.classList.remove('popup_opened');
+  document.removeEventListener('keydown', keyHandler);//удалили обработчик кнопки закрытия нажатием на Esc
 }
 
 closeButton.addEventListener('click', () => { closePopup(popup)}); //обработчик кнопки закрытия редактирования
