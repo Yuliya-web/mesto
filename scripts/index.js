@@ -1,3 +1,6 @@
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
 const popup = document.querySelector('.popup'); //попап редактирования профиля
 const profile = document.querySelector('.profile');
 const editButton = profile.querySelector('.profile__edit-button'); //кнопка редактирования профиля
@@ -13,25 +16,51 @@ const addButton = profile.querySelector('.profile__add-button'); //кнопка 
 const addContainer = popupAdd.querySelector('.popup__container');//контейнер в попапе добавления
 const closeButtonPic = addContainer.querySelector('.add-popup__close-button'); //закрытие попапа формы добавления
 
-const elementContainer = document.querySelector('.elements'); //грид картинок
+//const elementContainer = document.querySelector('.elements'); //грид картинок
 const popupPic = document.querySelector('.pic-popup'); //попап увеличенной картинки
+
+const initialCards = [        //массив
+  {   
+      name: 'Архыз',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+      name: 'Челябинская область',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+      name: 'Иваново',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+      name: 'Камчатка',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+      name: 'Холмогорский район',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+      name: 'Байкал',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
 
  //открытие-закрытие попапов
  
 function openPopup(pop){ //функция открытия попапов
   pop.classList.add('popup_opened');
   document.addEventListener('keydown', keyHandler);//обработчик кнопки закрытия нажатием на Esc
+    // Создадим экземпляр валидированной формы
+  const ValidCard = new FormValidator();
+    // Создаём форму и возвращаем наружу
+  ValidCard.enableValidation();
 }
 
 editButton.addEventListener('click', () => { //обработчик кнопки редактирования
   openPopup(popup); 
   name.value = nameProfile.textContent; 
   about.value = aboutProfile.textContent;
-  //const inpError = addContainer.querySelector('popup__name-field-error_active'); 
-  //const fieldError = addContainer.querySelector('popup__name-field_error'); 
-
-  //inpError.classList.remove('.popup__name-field-error_active');
-  //fieldError.classList.remove('.popup__name-field_error');
 }); 
 
 addButton.addEventListener('click', () => { //обработчик кнопки добавления +
@@ -78,48 +107,42 @@ function formSubmitHandler(evt){ //для подтягивания в профи
 }
 container.addEventListener('submit', formSubmitHandler); //перенос данных формы по клику Submit (имя и работа) и закрытие
 
-//создаем карточки из массива
 
-const addElement = document.querySelector('#element');//выбрали темплэйт
+//  Проходим по массиву
 
-function addElementContainer (element){ //делаем контейнер под карточку
-  const cloneCard = addElement.content.cloneNode(true); //клонируем карточку из темплэйта
-  const elImage = cloneCard.querySelector('.element__image');
-  const elTitle = cloneCard.querySelector('.element__title');
-  elImage.src = element.link; //ссылка вытаскивает картинку
-  elTitle.textContent = element.name;  //в подпись подтягивает имя из массива
-     
-    //задействуем кнопку "лайк"
-    const likeButton = cloneCard.querySelector('.element__like');// объявляем кнопку Лайк 
-      function likeBtn(evt){  
-        evt.target.classList.toggle('element__like_active');
-      } 
-    likeButton.addEventListener('click', likeBtn);    
-    
-    //задействуем кнопку "удалить"
-    const delButton = cloneCard.querySelector('.element__delete-card'); //объявляем кнопку корзина
-    const elementCard = cloneCard.querySelector('.element'); //объявляем элемент под удаление
-    function deleteElement(){  //функция удаления карточки
-      elementCard.classList.add('element_non-display'); //добавляет класс не показывать карточку (удалить)
-    }
-    delButton.addEventListener('click', deleteElement); //запускаем удаление по клику
+initialCards.forEach((item) => {
+  const card = new Card(item.link, item.name);
 
-    //задействуем функцию увеличения картинки
-    function openPopupPic(){ //функция открытия увеличенной картинки 
-      openPopup(popupPic); //добавляет класс для открытия попапа картинки 
-      popupPic.querySelector('.pic-popup__content').src = elImage.src;  //подтягивает картинку из объявленной 
-      popupPic.querySelector('.pic-popup__name').textContent = element.name; //подтягивает имя элемента 
-    } 
-    elImage.addEventListener('click', openPopupPic);//открытие увеличенной картинки
+  // Создаём карточку и возвращаем наружу
+  const cardElement = card.generateCard();
+  cardElement.querySelector('.element__image').src = item.link;
+  cardElement.querySelector('.element__title').textContent = item.name;
+  
+  // Добавляем в DOM
+  document.querySelector('.elements').prepend(cardElement);
+  document.querySelector('.element__like').addEventListener('click', likeBtn);
+  document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
+});
 
-    
-    return cloneCard;     
+
+//  Лайк
+const likeButton = document.querySelector('.element__like');// объявляем кнопку Лайк 
+function likeBtn(evt){  
+  evt.target.classList.toggle('element__like_active');
 }
 
-initialCards.forEach((element) => {
-  elementContainer.prepend(addElementContainer(element));//проходим по массиву функцией создания карточек и добавляем их в контейнер
-});    
 
+
+//  задействуем функцию увеличения картинки
+
+function openPopupPic(article){ //функция открытия увеличенной картинки 
+  const elImage = article.querySelector('.element__image');
+  const elTitle = article.querySelector('.element__title');
+  openPopup(popupPic); //добавляет класс для открытия попапа картинки   
+  
+  popupPic.querySelector('.pic-popup__content').src = elImage.src;  //подтягивает картинку из объявленной 
+  popupPic.querySelector('.pic-popup__name').textContent = elTitle.textContent; //подтягивает имя элемента 
+} 
 
 const closePicBtn = popupPic.querySelector('.pic-popup__close-button'); //объявили кнопку закрытия картинки
 
@@ -128,14 +151,27 @@ closePicBtn.addEventListener('click', () => { closePopup(popupPic)});//заде�
 popupPic.addEventListener('click', closeFormByOverlay);//обработчик кнопки закрытия по нажатию на оверлэй 
 
 
-//добавляем новые карточки
+
+//  Добавление новой карточки через форму
 
 const namePic = addContainer.querySelector('#namePic');//название картинки в форме
 const linkPic = addContainer.querySelector('#link');//ссылка на картинку в форме
-function formSubmitPic(evt){ //функция добавления нового элемента
-  const newCard = {name: namePic.value, link: linkPic.value};
-  evt.preventDefault();
-  closePopup(popupAdd); //закрываем Попап добавления картинок-элементов
-  elementContainer.prepend(addElementContainer(newCard));
+
+function formSubmitPic(){ //функция добавления нового элемента
+  // Создадим экземпляр карточки
+  const AddCard = new Card(linkPic, namePic);
+  // Создаём карточку и возвращаем наружу
+  const AddCardElement = AddCard.generateCard();
+  //  Определим картинку и название
+  AddCardElement.querySelector('.element__image').src = linkPic.value;
+  AddCardElement.querySelector('.element__title').textContent = namePic.value;
+  // Добавляем в DOM
+  
+  document.querySelector('.elements').prepend(AddCardElement);
+  closePopup(popupAdd);
+  document.querySelector('.element__like').addEventListener('click', likeBtn);
+  document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
 }
 addContainer.addEventListener('submit', formSubmitPic);// задействуем форму добавления элемента по клику
+
+
