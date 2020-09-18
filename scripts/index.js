@@ -14,10 +14,19 @@ const aboutProfile = profile.querySelector('.profile__subtitle'); //работа
 const popupAdd = document.querySelector('.add-popup');//попап добавления элемента
 const addButton = profile.querySelector('.profile__add-button'); //кнопка +
 const addContainer = popupAdd.querySelector('.popup__container');//контейнер в попапе добавления
+const createButton = popupAdd.querySelector('.popup__save-button'); //кнопка сохранения в попапе
 const closeButtonPic = addContainer.querySelector('.add-popup__close-button'); //закрытие попапа формы добавления
-
-//const elementContainer = document.querySelector('.elements'); //грид картинок
+const namePic = addContainer.querySelector('#namePic');//название картинки в форме
+const linkPic = addContainer.querySelector('#link');//ссылка на картинку в форме
 const popupPic = document.querySelector('.pic-popup'); //попап увеличенной картинки
+
+const selectorObject = { //  Селектор для классов полей формы, кнопок и валидации
+  inputSelector: '.popup__name-field', 
+  submitButtonSelector: '.popup__save-button', 
+  inactiveButtonClass: 'popup__save-button_inactive',   
+  inputErrorClass: 'popup__name-field_error', 
+  errorClass: 'popup__name-field-error_active'
+}
 
 const initialCards = [        //массив
   {   
@@ -47,14 +56,15 @@ const initialCards = [        //массив
 ];
 
  //открытие-закрытие попапов
- 
+
 function openPopup(pop){ //функция открытия попапов
   pop.classList.add('popup_opened');
   document.addEventListener('keydown', keyHandler);//обработчик кнопки закрытия нажатием на Esc
-    // Создадим экземпляр валидированной формы
-  const ValidCard = new FormValidator();
+    
+  // Создадим экземпляр валидированной формы
+  const validCard = new FormValidator(selectorObject, '.popup__container');
     // Создаём форму и возвращаем наружу
-  ValidCard.enableValidation();
+  validCard.enableValidation();
 }
 
 editButton.addEventListener('click', () => { //обработчик кнопки редактирования
@@ -66,15 +76,14 @@ editButton.addEventListener('click', () => { //обработчик кнопки
 addButton.addEventListener('click', () => { //обработчик кнопки добавления +
   openPopup(popupAdd); 
   namePic.value = '';
-  linkPic.value = '';
-  const createButton = popupAdd.querySelector('.popup__save-button');
+  linkPic.value = '';  
   createButton.classList.add('popup__save-button_inactive');
   createButton.disabled = true;
 }); 
 
 function keyHandler(evt){ //закрытие на Esc
-  if (evt.keyCode === 27){
-    const popupOpened = document.querySelector('.popup_opened')//открытый попап
+  if (evt.keyCode === 27){  
+    const popupOpened = document.querySelector('.popup_opened')//открытый попап  
     closePopup(popupOpened);
   }  
 } 
@@ -111,7 +120,7 @@ container.addEventListener('submit', formSubmitHandler); //перенос дан
 //  Проходим по массиву
 
 initialCards.forEach((item) => {
-  const card = new Card(item.link, item.name);
+  const card = new Card(item, '#element');
 
   // Создаём карточку и возвращаем наружу
   const cardElement = card.generateCard();
@@ -126,20 +135,17 @@ initialCards.forEach((item) => {
 
 
 //  Лайк
-const likeButton = document.querySelector('.element__like');// объявляем кнопку Лайк 
+
 function likeBtn(evt){  
   evt.target.classList.toggle('element__like_active');
 }
 
-
-
 //  задействуем функцию увеличения картинки
 
-function openPopupPic(article){ //функция открытия увеличенной картинки 
+function openPopupPic(article){ //функция открытия увеличенной картинки   
+  openPopup(popupPic); //добавляет класс для открытия попапа картинки   
   const elImage = article.querySelector('.element__image');
   const elTitle = article.querySelector('.element__title');
-  openPopup(popupPic); //добавляет класс для открытия попапа картинки   
-  
   popupPic.querySelector('.pic-popup__content').src = elImage.src;  //подтягивает картинку из объявленной 
   popupPic.querySelector('.pic-popup__name').textContent = elTitle.textContent; //подтягивает имя элемента 
 } 
@@ -154,20 +160,19 @@ popupPic.addEventListener('click', closeFormByOverlay);//обработчик к
 
 //  Добавление новой карточки через форму
 
-const namePic = addContainer.querySelector('#namePic');//название картинки в форме
-const linkPic = addContainer.querySelector('#link');//ссылка на картинку в форме
-
-function formSubmitPic(){ //функция добавления нового элемента
+function formSubmitPic(item){ //функция добавления нового элемента
   // Создадим экземпляр карточки
-  const AddCard = new Card(linkPic, namePic);
+  const addCard = new Card(item, '#element');
   // Создаём карточку и возвращаем наружу
-  const AddCardElement = AddCard.generateCard();
+  const addCardElement = addCard.generateCard();
   //  Определим картинку и название
-  AddCardElement.querySelector('.element__image').src = linkPic.value;
-  AddCardElement.querySelector('.element__title').textContent = namePic.value;
+  addCardElement.querySelector('.element__image').src = linkPic.value;
+  linkPic.value = item.link;
+  addCardElement.querySelector('.element__title').textContent = namePic.value;
+  namePic.value = item.name;
   // Добавляем в DOM
   
-  document.querySelector('.elements').prepend(AddCardElement);
+  document.querySelector('.elements').prepend(addCardElement);
   closePopup(popupAdd);
   document.querySelector('.element__like').addEventListener('click', likeBtn);
   document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});

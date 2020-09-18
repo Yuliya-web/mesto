@@ -1,15 +1,15 @@
 export default class Card {
   
   constructor(item, cardSelector) {
-    this._image = item.image;
-    this._title = item.title;
+    this._image = item.link;
+    this._title = item.name;
     this._cardSelector = cardSelector;
   }
  
   _getTemplate() {
     const cardElement = document  
       .querySelector('#element')
-      .content      
+      .content            
       .cloneNode(true);
 
     return cardElement;
@@ -23,12 +23,10 @@ export default class Card {
   }
     
   _deleteCard(ment) {    
-    const element = ment.parentElement;
-    element.remove();
+    ment.parentElement.remove();
   }
 
   _setEventListeners(cont) {
-    const delButton = cont.querySelector('.element__delete-card');
-    delButton.addEventListener('click', evt => {this._deleteCard(evt.target)});
+    cont.querySelector('.element__delete-card').addEventListener('click', evt => {this._deleteCard(evt.target)});
   }
 }
