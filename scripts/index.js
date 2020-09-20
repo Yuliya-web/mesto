@@ -18,7 +18,9 @@ const createButton = popupAdd.querySelector('.popup__save-button'); //кнопк
 const closeButtonPic = addContainer.querySelector('.add-popup__close-button'); //закрытие попапа формы добавления
 const namePic = addContainer.querySelector('#namePic');//название картинки в форме
 const linkPic = addContainer.querySelector('#link');//ссылка на картинку в форме
+
 const popupPic = document.querySelector('.pic-popup'); //попап увеличенной картинки
+const closePicBtn = popupPic.querySelector('.pic-popup__close-button'); //объявили кнопку закрытия картинки
 
 const selectorObject = { //  Селектор для классов полей формы, кнопок и валидации
   inputSelector: '.popup__name-field', 
@@ -55,6 +57,7 @@ const initialCards = [        //массив
   }
 ];
 
+
  //открытие-закрытие попапов
 
 function openPopup(pop){ //функция открытия попапов
@@ -63,17 +66,17 @@ function openPopup(pop){ //функция открытия попапов
     
   // Создадим экземпляр валидированной формы
   const validCard = new FormValidator(selectorObject, '.popup__container');
-    // Создаём форму и возвращаем наружу
+  // Создаём форму и возвращаем наружу
   validCard.enableValidation();
 }
 
-editButton.addEventListener('click', () => { //обработчик кнопки редактирования
+editButton.addEventListener('click', () => { //обработчик кнопки редактирования профиля
   openPopup(popup); 
   name.value = nameProfile.textContent; 
   about.value = aboutProfile.textContent;
 }); 
 
-addButton.addEventListener('click', () => { //обработчик кнопки добавления +
+addButton.addEventListener('click', () => { //обработчик кнопки добавления + карточки
   openPopup(popupAdd); 
   namePic.value = '';
   linkPic.value = '';  
@@ -117,28 +120,33 @@ function formSubmitHandler(evt){ //для подтягивания в профи
 container.addEventListener('submit', formSubmitHandler); //перенос данных формы по клику Submit (имя и работа) и закрытие
 
 
-//  Проходим по массиву
+//  Проходим по массиву для создания карточек
 
 initialCards.forEach((item) => {
+  // Создадим экземпляр карточки
   const card = new Card(item, '#element');
-
   // Создаём карточку и возвращаем наружу
-  const cardElement = card.generateCard();
-  cardElement.querySelector('.element__image').src = item.link;
-  cardElement.querySelector('.element__title').textContent = item.name;
-  
+  const newCardElement = card.generateCard();  
   // Добавляем в DOM
-  document.querySelector('.elements').prepend(cardElement);
-  document.querySelector('.element__like').addEventListener('click', likeBtn);
+  document.querySelector('.elements').prepend(newCardElement);
   document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
 });
 
 
-//  Лайк
+//  Добавление новой карточки через форму
 
-function likeBtn(evt){  
-  evt.target.classList.toggle('element__like_active');
+function formSubmitPic(item){ //функция добавления нового элемента
+  // Создадим экземпляр карточки
+  const addCard = new Card(item, '#element');
+  // Создаём карточку и возвращаем наружу
+  const addCardElement = addCard.generateCard();
+  // Добавляем в DOM  
+  document.querySelector('.elements').prepend(addCardElement);
+  closePopup(popupAdd);
+  document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
 }
+addContainer.addEventListener('submit', formSubmitPic);// задействуем форму добавления элемента по клику
+
 
 //  задействуем функцию увеличения картинки
 
@@ -150,33 +158,11 @@ function openPopupPic(article){ //функция открытия увеличе
   popupPic.querySelector('.pic-popup__name').textContent = elTitle.textContent; //подтягивает имя элемента 
 } 
 
-const closePicBtn = popupPic.querySelector('.pic-popup__close-button'); //объявили кнопку закрытия картинки
-
 closePicBtn.addEventListener('click', () => { closePopup(popupPic)});//задействуем кнопку закрытия по клику на кнопку закрытия
 
 popupPic.addEventListener('click', closeFormByOverlay);//обработчик кнопки закрытия по нажатию на оверлэй 
 
 
 
-//  Добавление новой карточки через форму
-
-function formSubmitPic(item){ //функция добавления нового элемента
-  // Создадим экземпляр карточки
-  const addCard = new Card(item, '#element');
-  // Создаём карточку и возвращаем наружу
-  const addCardElement = addCard.generateCard();
-  //  Определим картинку и название
-  addCardElement.querySelector('.element__image').src = linkPic.value;
-  linkPic.value = item.link;
-  addCardElement.querySelector('.element__title').textContent = namePic.value;
-  namePic.value = item.name;
-  // Добавляем в DOM
-  
-  document.querySelector('.elements').prepend(addCardElement);
-  closePopup(popupAdd);
-  document.querySelector('.element__like').addEventListener('click', likeBtn);
-  document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
-}
-addContainer.addEventListener('submit', formSubmitPic);// задействуем форму добавления элемента по клику
 
 
