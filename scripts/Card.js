@@ -1,6 +1,7 @@
 export default class Card {  //p.s.мне не трудно, я справляюсь. Просто скажите, в чем проблемы и я буду их устранять (это и есть обучение)
   
   constructor(item, cardSelector) {
+    this._item = item;
     this._image = item.link;
     this._title = item.name;
     this._cardSelector = cardSelector;
@@ -11,17 +12,17 @@ export default class Card {  //p.s.мне не трудно, я справляю
       .querySelector(this._cardSelector)
       .content            
       .cloneNode(true);
-
-    cardElement.querySelector('.element__image').src = this._image || document.querySelector('#link').value; //  определили картинку для карточки из массива или из формы
-    cardElement.querySelector('.element__image').alt = this._title || document.querySelector('#namePic').value;// определили альт картинки для карточки из массива или из формы
-    cardElement.querySelector('.element__title').textContent = this._title || document.querySelector('#namePic').value;//  определили название для карточки из массива или из формы
-    
+   
     return cardElement;
   }
 
   generateCard() {
     this._element = this._getTemplate();
     this._setEventListeners(this._element);
+
+    this._element.querySelector('.element__image').src = this._image || document.querySelector('#link').value; //  определили картинку для карточки из массива или из формы
+    this._element.querySelector('.element__image').alt = this._title || document.querySelector('#namePic').value;// определили альт картинки для карточки из массива или из формы
+    this._element.querySelector('.element__title').textContent = this._title || document.querySelector('#namePic').value;//  определили название для карточки из массива или из формы
   // Вернём элемент наружу
     return this._element; 
   }
