@@ -1,7 +1,7 @@
-export default class Card {  //p.s.мне не трудно, я справляюсь. Просто скажите, в чем проблемы и я буду их устранять (это и есть обучение)
+import openPopup from './index.js';
+export default class Card {  
   
   constructor(item, cardSelector) {
-    this._item = item;
     this._image = item.link;
     this._title = item.name;
     this._cardSelector = cardSelector;
@@ -18,10 +18,11 @@ export default class Card {  //p.s.мне не трудно, я справляю
 
   generateCard() {
     this._element = this._getTemplate();
-    this._setEventListeners(this._element);
+    this._setEventListeners();
 
-    this._element.querySelector('.element__image').src = this._image || document.querySelector('#link').value; //  определили картинку для карточки из массива или из формы
-    this._element.querySelector('.element__image').alt = this._title || document.querySelector('#namePic').value;// определили альт картинки для карточки из массива или из формы
+    const elementImage = this._element.querySelector('.element__image');
+    elementImage.src = this._image || document.querySelector('#link').value; //  определили картинку для карточки из массива или из формы
+    elementImage.alt = this._title || document.querySelector('#namePic').value;// определили альт картинки для карточки из массива или из формы
     this._element.querySelector('.element__title').textContent = this._title || document.querySelector('#namePic').value;//  определили название для карточки из массива или из формы
   // Вернём элемент наружу
     return this._element; 
@@ -35,8 +36,16 @@ export default class Card {  //p.s.мне не трудно, я справляю
     delButton.parentElement.remove();
   }
 
-  _setEventListeners(activeElement) {
-    activeElement.querySelector('.element__delete-card').addEventListener('click', evt => {this._deleteCard(evt.target)});
-    activeElement.querySelector('.element__like').addEventListener('click', this._likeBtn);
+  _openPopupPic(element){ //функция открытия увеличенной картинки   
+    const popupPic = document.querySelector('.pic-popup'); //попап увеличенной картинки
+    openPopup(popupPic);
+    popupPic.querySelector('.pic-popup__content').src = element.querySelector('.element__image').src;  //подтягивает картинку 
+    popupPic.querySelector('.pic-popup__name').textContent = element.querySelector('.element__title').textContent; //подтягивает имя элемента 
+  } 
+
+  _setEventListeners() {
+    this._element.querySelector('.element__delete-card').addEventListener('click', evt => {this._deleteCard(evt.target)});
+    this._element.querySelector('.element__like').addEventListener('click', this._likeBtn);
+    this._element.querySelector('.element__image').addEventListener('click', evt => {this._openPopupPic(evt.target.parentElement)});
   }
 }

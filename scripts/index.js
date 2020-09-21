@@ -22,6 +22,8 @@ const linkPic = addContainer.querySelector('#link');//ссылка на карт
 const popupPic = document.querySelector('.pic-popup'); //попап увеличенной картинки
 const closePicBtn = popupPic.querySelector('.pic-popup__close-button'); //объявили кнопку закрытия картинки
 
+const elementsContainer = document.querySelector('.elements') //  Контейнер под карточки
+
 const selectorObject = { //  Селектор для классов полей формы, кнопок и валидации
   inputSelector: '.popup__name-field', 
   submitButtonSelector: '.popup__save-button', 
@@ -60,7 +62,7 @@ const initialCards = [        //массив
 
  //открытие-закрытие попапов
 
-function openPopup(pop){ //функция открытия попапов
+export default function openPopup(pop){ //функция открытия попапов
   pop.classList.add('popup_opened');
   document.addEventListener('keydown', keyHandler);//обработчик кнопки закрытия нажатием на Esc
     
@@ -128,8 +130,8 @@ initialCards.forEach((item) => {
   // Создаём карточку и возвращаем наружу
   const newCardElement = card.generateCard();  
   // Добавляем в DOM
-  document.querySelector('.elements').prepend(newCardElement);
-  document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
+  elementsContainer.prepend(newCardElement);
+  //document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
 });
 
 
@@ -141,26 +143,16 @@ function formSubmitPic(item){ //функция добавления нового
   // Создаём карточку и возвращаем наружу
   const addCardElement = addCard.generateCard();
   // Добавляем в DOM  
-  document.querySelector('.elements').prepend(addCardElement);
+  elementsContainer.prepend(addCardElement);
   closePopup(popupAdd);
-  document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
+  //document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
 }
 addContainer.addEventListener('submit', formSubmitPic);// задействуем форму добавления элемента по клику
 
 
-//  задействуем функцию увеличения картинки
+closePicBtn.addEventListener('click', () => {closePopup(popupPic)});//задействуем кнопку закрытия картинки по клику на кнопку закрытия
 
-function openPopupPic(article){ //функция открытия увеличенной картинки   
-  openPopup(popupPic); //добавляет класс для открытия попапа картинки   
-  const elImage = article.querySelector('.element__image');
-  const elTitle = article.querySelector('.element__title');
-  popupPic.querySelector('.pic-popup__content').src = elImage.src;  //подтягивает картинку из объявленной 
-  popupPic.querySelector('.pic-popup__name').textContent = elTitle.textContent; //подтягивает имя элемента 
-} 
-
-closePicBtn.addEventListener('click', () => { closePopup(popupPic)});//задействуем кнопку закрытия по клику на кнопку закрытия
-
-popupPic.addEventListener('click', closeFormByOverlay);//обработчик кнопки закрытия по нажатию на оверлэй 
+popupPic.addEventListener('click', closeFormByOverlay);//обработчик кнопки закрытия картинки по нажатию на оверлэй 
 
 
 
