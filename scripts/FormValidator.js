@@ -1,4 +1,4 @@
-export default class FormValidator {
+export default class FormValidator { 
 
   constructor(selectorObject, formsElement) {    
     this._inputSelector = selectorObject.inputSelector;
@@ -47,26 +47,23 @@ export default class FormValidator {
     }
   }
 
-  _validateListeners = (formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll(this._inputSelector));
-    const buttonElement = formElement.querySelector(this._submitButtonSelector);
+  _validateListeners = () => {
+    const inputList = Array.from(this._formsElement.querySelectorAll(this._inputSelector));
+    const buttonElement = this._formsElement.querySelector(this._submitButtonSelector);
     this._toggleButtonState(inputList, buttonElement); 
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
-        this._isValid(formElement, inputElement);
+        this._isValid(this._formsElement, inputElement);
         this._toggleButtonState(inputList, buttonElement);
       });
     });
   }
 
   enableValidation() {
-    const formList = Array.from(document.querySelectorAll(this._formsElement));
-    formList.forEach((formElement) => {
-      formElement.addEventListener('submit', (evt) => {
-        evt.preventDefault();
-      });
-      this._validateListeners(formElement);
-    });
+    this._formsElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    })
+    this._validateListeners();
   }
 }
 

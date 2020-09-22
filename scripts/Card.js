@@ -1,4 +1,4 @@
-import openPopup from './index.js';
+import { openPopup, popupPic } from './index.js';
 export default class Card {  
   
   constructor(item, cardSelector) {
@@ -18,11 +18,11 @@ export default class Card {
 
   generateCard() {
     this._element = this._getTemplate();
+    this._elementImage = this._element.querySelector('.element__image');
     this._setEventListeners();
 
-    const elementImage = this._element.querySelector('.element__image');
-    elementImage.src = this._image || document.querySelector('#link').value; //  определили картинку для карточки из массива или из формы
-    elementImage.alt = this._title || document.querySelector('#namePic').value;// определили альт картинки для карточки из массива или из формы
+    this._elementImage.src = this._image || document.querySelector('#link').value; //  определили картинку для карточки из массива или из формы
+    this._elementImage.alt = this._title || document.querySelector('#namePic').value;// определили альт картинки для карточки из массива или из формы
     this._element.querySelector('.element__title').textContent = this._title || document.querySelector('#namePic').value;//  определили название для карточки из массива или из формы
   // Вернём элемент наружу
     return this._element; 
@@ -37,9 +37,9 @@ export default class Card {
   }
 
   _openPopupPic(element){ //функция открытия увеличенной картинки   
-    const popupPic = document.querySelector('.pic-popup'); //попап увеличенной картинки
     openPopup(popupPic);
-    popupPic.querySelector('.pic-popup__content').src = element.querySelector('.element__image').src;  //подтягивает картинку 
+
+    popupPic.querySelector('.pic-popup__content').src = this._elementImage.src;  //подтягивает картинку 
     popupPic.querySelector('.pic-popup__name').textContent = element.querySelector('.element__title').textContent; //подтягивает имя элемента 
   } 
 
