@@ -19,11 +19,12 @@ export default class Card {
   generateCard() {
     this._element = this._getTemplate();
     this._elementImage = this._element.querySelector('.element__image');
+    this._elementTitle = this._element.querySelector('.element__title')
     this._setEventListeners();
 
     this._elementImage.src = this._image || document.querySelector('#link').value; //  определили картинку для карточки из массива или из формы
     this._elementImage.alt = this._title || document.querySelector('#namePic').value;// определили альт картинки для карточки из массива или из формы
-    this._element.querySelector('.element__title').textContent = this._title || document.querySelector('#namePic').value;//  определили название для карточки из массива или из формы
+    this._elementTitle.textContent = this._title || document.querySelector('#namePic').value;//  определили название для карточки из массива или из формы
   // Вернём элемент наружу
     return this._element; 
   }
@@ -36,16 +37,16 @@ export default class Card {
     delButton.parentElement.remove();
   }
 
-  _openPopupPic(element){ //функция открытия увеличенной картинки   
+  _openPopupPic(){ //функция открытия увеличенной картинки   
     openPopup(popupPic);
 
     popupPic.querySelector('.pic-popup__content').src = this._elementImage.src;  //подтягивает картинку 
-    popupPic.querySelector('.pic-popup__name').textContent = element.querySelector('.element__title').textContent; //подтягивает имя элемента 
+    popupPic.querySelector('.pic-popup__name').textContent = this._elementTitle.textContent; //подтягивает имя элемента 
   } 
 
   _setEventListeners() {
     this._element.querySelector('.element__delete-card').addEventListener('click', evt => {this._deleteCard(evt.target)});
     this._element.querySelector('.element__like').addEventListener('click', this._likeBtn);
-    this._element.querySelector('.element__image').addEventListener('click', evt => {this._openPopupPic(evt.target.parentElement)});
+    this._elementImage.addEventListener('click', () => {this._openPopupPic()});
   }
 }

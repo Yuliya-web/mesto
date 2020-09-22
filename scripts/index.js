@@ -136,7 +136,6 @@ initialCards.forEach((item) => {
   const newCardElement = card.generateCard();  
   // Добавляем в DOM
   elementsContainer.prepend(newCardElement);
-  //document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
 });
 
 
@@ -149,8 +148,7 @@ function formSubmitPic(item){ //функция добавления нового
   const addCardElement = addCard.generateCard();
   // Добавляем в DOM  
   elementsContainer.prepend(addCardElement);
-  closePopup(popupAdd);
-  //document.querySelector('.element__image').addEventListener('click', evt => {openPopupPic(evt.target.parentElement)});
+  closePopup(popupAdd);  
 }
 addContainer.addEventListener('submit', formSubmitPic);// задействуем форму добавления элемента по клику
 
