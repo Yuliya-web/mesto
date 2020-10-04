@@ -6,7 +6,7 @@ export default class Section {
     this._containerSelector = containerSelector;
   }
  
-  getElement() {
+  render() {
     this._items.forEach(item => {
       this._renderer(item); // вызываем renderer, передав item
     });

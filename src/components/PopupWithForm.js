@@ -3,10 +3,10 @@ import { addContainer, container, namePic, linkPic } from '../utils/constants.js
 
 export default class PopupWithForm extends Popup{ 
   
-  constructor( { submitFunc, submitEdit}, popupSelector) {
+  constructor( { formSelector, onSubmit }, popupSelector) {
     super(popupSelector);
-    this._submitFunc = submitFunc;
-    this._submitEdit = submitEdit;
+    this._form = this._popupSelector.querySelector(formSelector);
+    this._onSubmit = onSubmit;
   }
  
   _getInputValues() {
@@ -19,8 +19,7 @@ export default class PopupWithForm extends Popup{
 
   setEventListeners() {
     super.setEventListeners(); 
-    container.addEventListener('submit', this._submitEdit); //перенос данных формы по клику Submit (имя и работа) и закрытие
-    addContainer.addEventListener('submit', this._submitFunc);// задействуем форму добавления элемента по сабмиту
+    this._form.addEventListener('submit', this._onSubmit); //перенос данных формы по клику Submit и закрытие
   }
 
   close() {

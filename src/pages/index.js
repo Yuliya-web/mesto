@@ -27,7 +27,7 @@ const cardList = new Section({
   elementsContainer
 );
 
-cardList.getElement(); // создаем раздел с карточками
+cardList.render(); // создаем раздел с карточками
 
 //  Валидация
 
@@ -37,15 +37,17 @@ validProfile.enableValidation();
 validAdd.enableValidation();
 
 // Данные профиля
-
 const personInfo = new UserInfo({ nameSelector: '.profile__title', aboutSelector: '.profile__subtitle' });
 
-editButton.addEventListener('click', () => { //обработчик кнопки редактирования профиля
-  const editPopup = new PopupWithForm({ submitEdit: (evt) => {
+// экземпляр формы редактирования профиля
+const editPopup = new PopupWithForm({ formSelector: '.popup__container', onSubmit: (evt) => {
     evt.preventDefault();
     personInfo.setUserInfo();
     editPopup.close()}
   } , '.popup');
+
+//обработчик кнопки редактирования профиля  
+editButton.addEventListener('click', () => { 
   editPopup.open();
   const objPersonal = personInfo.getUserInfo();
   name.value = objPersonal.nameSelector; 
@@ -53,8 +55,7 @@ editButton.addEventListener('click', () => { //обработчик кнопки
 }); 
 
 //  Добавление новой карточки через форму
-
-const addPopup = new PopupWithForm({ submitFunc: (evt) => {
+const addPopup = new PopupWithForm({ formSelector: '.popup__container', onSubmit: (evt) => {
   evt.preventDefault();
   const objInp = addPopup._getInputValues();
   // Создадим экземпляр карточки
