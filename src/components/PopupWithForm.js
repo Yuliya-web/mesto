@@ -1,5 +1,5 @@
 import Popup from './Popup.js';
-import { addContainer, container, namePic, linkPic } from '../utils/constants.js';
+import { namePic, linkPic, linkAva } from '../utils/constants.js';
 
 export default class PopupWithForm extends Popup{ 
   
@@ -26,5 +26,6 @@ export default class PopupWithForm extends Popup{
     super.close();
     namePic.value = '';
     linkPic.value = ''; 
+    linkAva.value = '';
   }
 }

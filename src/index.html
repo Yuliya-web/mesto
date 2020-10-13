@@ -18,13 +18,14 @@
 
       <section class="profile">
         <div class="profile__info">
-          <img class="profile__avatar" src="./images/avatar.jpg" alt="Аватар">
+          <img class="profile__avatar" alt="Аватар">
+          <button class="profile__edit-avatar" type="button"></button>
           <div class="profile__person">
             <div class="profile__title-and-edit">
-              <h1 class="profile__title">Жак-Ив Кусто</h1>
+              <h1 class="profile__title"></h1>
               <button class="profile__edit-button" type="button"></button>
             </div>
-            <p class="profile__subtitle">Исследователь океана</p>              
+            <p class="profile__subtitle"></p>              
           </div>                      
         </div>
         <button class="profile__add-button" type="button"></button>         
@@ -37,7 +38,10 @@
           <button  class="element__delete-card" type="button" id="delete"></button>
           <div class="element__text-and-button">         
             <p class="element__title"></p>
+            <div class="element__like-block">
             <button class="element__like" type="button" id="like"></button>
+            <p class="element__like-counter"></p>
+            </div>
           </div>  
         </div>                    
         </template>
@@ -65,6 +69,18 @@
     </form>
   </section>
 
+  <section class="avatar-popup">
+    <form class="popup__container" name="avatar-link" novalidate>
+      <button class="popup__close-button" type="button"></button> 
+      <h3 class="popup__title">Обновить аватар</h3>
+      <fieldset class="popup__fieldset">
+        <input type="url" class="popup__name-field" id="linkAva" name="linkAva" placeholder="Ссылка на аватар" required>
+        <span id="linkAva-error" class="popup__name-field-error"></span>
+      </fieldset>
+      <button class="popup__save-button" type="submit">Сохранить</button> 
+    </form>
+  </section>
+
   <section class="add-popup">
     <form class="popup__container" name="name-and-link" novalidate>
       <button class="popup__close-button" type="button"></button> 
@@ -87,6 +103,14 @@
         <figcaption class="pic-popup__name"></figcaption>
       </figure>          
     </div>
+  </section>
+
+  <section class="delete-popup">
+    <form class="delete-popup__container" name="delete">
+      <button class="popup__close-button" type="button"></button> 
+      <h3 class="popup__title">Вы уверены?</h3>
+      <button class="popup__save-button" type="submit">Да</button>       
+    </form>
   </section>
   
 </body>
