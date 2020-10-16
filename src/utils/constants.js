@@ -25,7 +25,10 @@ export const closePicBtn = popupPic.querySelector('.pic-popup__close-button'); /
 export const popupOp = document.querySelector('.popup_opened');//открытый попап 
 
 export const elementsContainer = document.querySelector('.elements'); //  Контейнер под карточки
-export const likeCounter = document.querySelector('.element__like-counter'); // Счатчик лайков
+export const likeCounter = document.querySelector('.element__like-counter'); // Счетчик лайков
+export const deleteCardBtn = document.querySelector('.element__delete-card');
+
+export const escapeKey = 27;
 
 export const selectorObject = { //  Селектор для классов полей формы, кнопок и валидации
   inputSelector: '.popup__name-field', 

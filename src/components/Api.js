@@ -1,149 +1,84 @@
-import { name, about, linkAva } from '../utils/constants.js';
-
 export default class Api {
   constructor(config) {
     this._url = config.url;
     this._headers = config.headers;
   }
 
+  _getResponseData(res){
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(new Error(`Ошибка: ${res.status}`));
+  }
+
   getUserInfo() {
     return fetch(`${this._url}users/me`, {
       method: 'GET',
       headers: this._headers
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
     })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    }); 
+    .then(res => this._getResponseData(res));
   }
 
   getCardsServer() {
     return fetch(`${this._url}cards`, {
       method: 'GET',
       headers: this._headers
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    }); 
+    }).then(res => this._getResponseData(res));
   }
 
 
-  editProf() {
+  editProf({ name, about }) {
     return fetch(`${this._url}users/me`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        name: name.value,
-        about: about.value
+        name,
+        about
       })
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    }); 
+    }).then(res => this._getResponseData(res));
   }
 
-  addNewCard() {
+  addNewCard({ name, link}) {
     return fetch(`${this._url}cards`, {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
-        name: document.querySelector('#namePic').value ,
-        link: document.querySelector('#link').value
+        name,
+        link
       })
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    }); 
+    }).then(res => this._getResponseData(res));
   }
 
   delMyCard(item) {
     return fetch(`${this._url}cards/`+item._id, {
       method: 'DELETE',
       headers: this._headers,
-      }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    }); 
-  }
+      }).then(res => this._getResponseData(res));
+   }
+ 
 
   putLike(item) {
     return fetch(`${this._url}cards/likes/`+item._id, {
       method: 'PUT',
       headers: this._headers
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    }); 
+    }).then(res => this._getResponseData(res));
   }
 
   delLike(item) {
     return fetch(`${this._url}cards/likes/`+item._id, {
       method: 'DELETE',
       headers: this._headers
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    }); 
+    }).then(res => this._getResponseData(res));
   }
 
-  editAvatar() {
+  editAvatar({ avatar }) {
     return fetch(`${this._url}users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        avatar : linkAva.value
+        avatar
       })
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    }); 
+    }).then(res => this._getResponseData(res));
   }
 
 }

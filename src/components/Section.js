@@ -12,7 +12,12 @@ export default class Section {
     });
   }
 
-  addItem(item) {
-    this._containerSelector.prepend(item);
+  addItem(element, isArray) { 
+    if (isArray) { 
+      this._containerSelector.append(element); 
+    } else { 
+      this._containerSelector.prepend(element); 
+    } 
   }
+  
 }

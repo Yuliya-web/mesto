@@ -1,5 +1,4 @@
 import Popup from './Popup.js';
-import { namePic, linkPic, linkAva } from '../utils/constants.js';
 
 export default class PopupWithForm extends Popup{ 
   
@@ -9,14 +8,6 @@ export default class PopupWithForm extends Popup{
     this._onSubmit = onSubmit;
   }
  
-  _getInputValues() {
-    const inputObj = {  
-      link : document.querySelector('#link').value,
-      name : document.querySelector('#namePic').value 
-    }
-    return inputObj;
-  }
-
   setEventListeners() {
     super.setEventListeners(); 
     this._form.addEventListener('submit', this._onSubmit); //перенос данных формы по клику Submit и закрытие
@@ -24,8 +15,6 @@ export default class PopupWithForm extends Popup{
 
   close() {
     super.close();
-    namePic.value = '';
-    linkPic.value = ''; 
-    linkAva.value = '';
+    this._form.reset();
   }
 }

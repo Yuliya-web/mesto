@@ -8,8 +8,9 @@
     padding-top: 34px;
     padding-bottom: 36.51px;
     width: 430px;
-    box-sizing:border-box;
     position: relative;
+    z-index: 3;
+    cursor: auto;
   }
   
   @media (max-width: 560px){

@@ -1,10 +1,10 @@
-import { name, about } from '../utils/constants.js';
 
 export default class UserInfo {  
   
-  constructor({ nameSelector, aboutSelector }) {
+  constructor({ nameSelector, aboutSelector, avaSelector }) {
     this._nameSelector = document.querySelector(nameSelector);
     this._aboutSelector = document.querySelector(aboutSelector);
+    this._avaSelector = document.querySelector(avaSelector);
   }
 
   getUserInfo() {
@@ -14,8 +14,9 @@ export default class UserInfo {
     return dataInfo ;
   }
   
-  setUserInfo() {
-    this._nameSelector.textContent = name.value;
-    this._aboutSelector.textContent = about.value;
+  setUserInfo(data) {
+    this._nameSelector.textContent = data.name;
+    this._aboutSelector.textContent = data.about;
+    this._avaSelector.src = data.avatar;
   }
 }
