@@ -19,7 +19,6 @@ export const namePic = addContainer.querySelector('#namePic');//название
 export const linkPic = addContainer.querySelector('#link');//ссылка на картинку в форме
 export const submAddCard = popupAdd.querySelector('.popup__save-button')//сабмит попапа добавления карточки
 
-
 export const popupPic = document.querySelector('.pic-popup'); //попап увеличенной картинки
 export const closePicBtn = popupPic.querySelector('.pic-popup__close-button'); //объявили кнопку закрытия картинки
 export const popupOp = document.querySelector('.popup_opened');//открытый попап 
@@ -29,6 +28,7 @@ export const likeCounter = document.querySelector('.element__like-counter'); // 
 export const deleteCardBtn = document.querySelector('.element__delete-card');
 
 export const escapeKey = 27;
+//export let myId = ''; 
 
 export const selectorObject = { //  Селектор для классов полей формы, кнопок и валидации
   inputSelector: '.popup__name-field', 

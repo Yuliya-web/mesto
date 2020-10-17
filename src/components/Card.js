@@ -1,16 +1,16 @@
 export default class Card {  
   
-  constructor(item, cardSelector, { handleCardClick }, { showAndDelete }, { likeOff }, { likeOn }) {
+  constructor(item, myId, cardSelector, { handleCardClick }, { showAndDelete }, { likeOff }, { likeOn }) {
     this._image = item.link;
     this._title = item.name;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
     this._likes = item.likes;
-    this._id = item.id;
     this._showAndDelete = showAndDelete;
     this._likeOff = likeOff;
     this._likeOn = likeOn;
-    this._myId = "d11a2f0d97502500a3df5278";
+    this._myId = myId;
+    this._ownerId = item.owner._id;
   }
  
   _getTemplate() {
@@ -86,8 +86,8 @@ export default class Card {
   }
 
   //  отображение кнопки корзинки удаления+слушатель на нее  
-  showDelBtn(item) { 
-    if (item.owner._id === this._myId) {this._delBtn.addEventListener('click', 
+  showDelBtn() { 
+    if (this._ownerId === this._myId) {this._delBtn.addEventListener('click', 
       this._showAndDelete)}
     else  {
       this._delBtn.remove();

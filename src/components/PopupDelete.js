@@ -13,7 +13,6 @@ export default class PopupDelete extends Popup {
     this._yesButton.addEventListener('click', (evt) => {//по клику удаляет и закрывает
       evt.preventDefault();
       this._onClick();
-      this.close();
     }); 
   }
 }

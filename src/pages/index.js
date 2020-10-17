@@ -10,6 +10,7 @@ import UserInfo from '../components/UserInfo.js';
 import { submAddCard, profileAvatar, elementsContainer, popup, popupAdd, editButton, name, about, selectorObject, addButton, popupAvatar, submProfButton, submProfAva, namePic, linkPic } from '../utils/constants.js';
 import { savingText } from '../utils/utils.js';
 import { data } from 'autoprefixer';
+let myId = ''; 
 
 //  1. Создадим ГЛАВНЫЙ экземпляр класса Api 
 const main = new Api({
@@ -22,35 +23,39 @@ const main = new Api({
 
 //  2. Подтянем карточки с сервера и подтянем данные объекта профиля с сервера, потом создадим профиль и контейнер с карточками
 
-Promise.all([  //в Promise.all передаем массив промисов которые нужно выполнить
+export default Promise.all([  //в Promise.all передаем массив промисов которые нужно выполнить
   main.getUserInfo(),
   main.getCardsServer()
 ])    
-.then((data)=>{    //попадаем сюда когда оба промиса будут выполнены
+  .then((data)=>{    //попадаем сюда когда оба промиса будут выполнены
   const [userData, initCards] = data;
-  personInfo.setUserInfo(userData);
-  const cardList = new Section({ //  Создадим экземпляр класса Section для прохода по массиву и добавления элементов в DOM
-    items: initCards,
-    renderer: (item) => { 
-      // проходимся методом по массиву, передадим параметром функцию, создающую карточку и создаем целую сетку карточек
-      cardList.addItem(createCard(item));        
-  }},
-    elementsContainer
-  );
-  cardList.render(); // создаем раздел с карточками  
+  myId = userData._id; // находим id пользователя для использования в Card
+  personInfo.setUserInfo(userData);   
+  cardList.render(initCards); // создаем раздел с карточками  
 })
 .catch((err)=>{     //попадаем сюда если один из промисов завершается ошибкой
   console.log(err);
 })
 
+//  Создадим экземпляр класса Section для прохода по массиву и добавления элементов в DOM
+const cardList = new Section({ 
+  //items: initCards,
+  renderer: (item) => { 
+    // проходимся методом по массиву, передадим параметром функцию, создающую карточку и создаем целую сетку карточек
+    cardList.addItem(createCard(item));        
+  }
+},
+  elementsContainer
+);
+
 //  Код создания экземпляра карточки
 const createCard = (item) => {
-  const card = new Card(item, '#element', 
+  const card = new Card(item, myId, '#element', 
     {
       handleCardClick:() => {  // функция увеличенной картинки
         //  Экземпляр класса попапа увеличенной картинки
-        const bigPicture = new PopupWithImage('.pic-popup', item);
-        bigPicture.open();  
+        const bigPicture = new PopupWithImage('.pic-popup');
+        bigPicture.open(item);  
         bigPicture.setEventListeners();
       } 
     },
@@ -61,7 +66,8 @@ const createCard = (item) => {
           onCkick: () => {                          
             main.delMyCard(item)
             .then(()=> { 
-              card.deleteCard(item);                       
+              card.deleteCard(item);  
+              delPopup.close();                   
             })
             .catch((err) => {
               console.log(err); // выведем ошибку в консоль
@@ -102,7 +108,7 @@ const createCard = (item) => {
   // Создаём карточку 
   const newCardElement = card.generateCard();
   //  отображение кнопки корзинки удаления+слушатель на нее
-  card.showDelBtn(item); 
+  card.showDelBtn(); 
   //  вернем созданную карточку
   return newCardElement;
 }
@@ -114,8 +120,7 @@ const createCard = (item) => {
     // Данные профиля
 const personInfo = new UserInfo({ nameSelector: '.profile__title', aboutSelector: '.profile__subtitle', avaSelector: '.profile__avatar' });
     // экземпляр формы редактирования профиля
-const editPopup = new PopupWithForm({ formSelector: '.popup__container', onSubmit: (evt) => {
-  evt.preventDefault();
+const editPopup = new PopupWithForm({ formSelector: '.popup__container', onSubmit: () => {
   savingText(true, submProfButton);
   main.editProf({ name: name.value, about: about.value })
     .then((data)=> {
@@ -146,8 +151,8 @@ const addPopup = new PopupWithForm({ formSelector: '.popup__container',
       savingText(true, submAddCard);  
       main.addNewCard({ name: namePic.value , link: linkPic.value }) 
       .then((data)=> {
-        addPopup.close();               
-        elementsContainer.prepend(createCard(data));       
+        addPopup.close();  
+        cardList.addItem(createCard(data));                 
       })
       .catch(err => console.log(err))
       .finally(()=> {
@@ -164,8 +169,7 @@ addButton.addEventListener('click', () => { //обработчик кнопки 
 
 //  5. Экземпляр класса попапа редактирования аватара
 const avaPopup = new PopupWithForm({ formSelector: '.popup__container', 
-  onSubmit: (evt) => {  
-    evt.preventDefault();
+  onSubmit: () => {  
     savingText(true, submProfAva);
     main.editAvatar({ avatar: linkAva.value })
       .then((data)=> {      
