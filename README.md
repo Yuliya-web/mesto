@@ -6,7 +6,7 @@
 
 **Ссылка на проект в GitHub**
 
-* [Ссылка](https://yuliya-web.github.io/mesto/src/index.html)
+* [Ссылка](https://yuliya-web.github.io/mesto/index.html)
 
 **Использованные технологии**
 
